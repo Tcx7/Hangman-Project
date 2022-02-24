@@ -6,10 +6,12 @@ var divText;
 var underscores;
 var createDiv;
 var element = document.getElementById("input-content");
-
+var lives = 5;
 document.querySelector(".btn-primary").addEventListener("click", displayData);
+var gameover = document.getElementById("game-over");
 
 function displayData() {
+  lives = 5;
   element.innerHTML = "";
   underscores = [];
   answerArray = [];
@@ -25,6 +27,7 @@ function displayData() {
   console.log(answer);
   document.addEventListener("keyup", function (e) {
     checkAnswer(e);
+    checkLives(e);
   });
 }
 
@@ -37,13 +40,23 @@ function convertToArray() {
 function checkAnswer(e) {
   for (let i = 0; i < answerArray.length; i++) {
     if (answerArray[i] === e.key) {
-      console.log("correct letter guessed");
       underscores[i] = answerArray[i];
-      // divText = document.createTextNode(underscores.join(" "));
-      // createDiv.appendChild(divText);
-      // element.appendChild(createDiv);
-      // // divText.appendChild(underscores);
-      // console.log(underscores);
+      divText = document.createTextNode(underscores.join(" "));
+      element.innerHTML = divText.textContent;
+    }
+  }
+}
+function checkLives(e) {
+  for (let i = 0; i < answerArray.length; i++) {
+    if (e.key != answerArray[i]) {
+      lives--;
+      if (lives === 0) {
+        // input game over overlay
+        gameover.style.display = "block";
+        console.log("gameover");
+        break;
+      }
+      break;
     }
   }
 }
