@@ -46,5 +46,22 @@ body {
 }
 
 #game-over {
+  font-size: 3rem;
   display: none;
+}
+
+#lives {
+  font-size: 3rem;
+}
+#game-label {
+  font-size: 3rem;
+  display: block;
+}
+.guess-content {
+  font-size: 3rem;
+}
+
+#guessedLetter {
+  display: flex;
+  flex-direction: column;
 }

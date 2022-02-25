@@ -2,13 +2,21 @@ var words = ["banana", "apple", "watermelon", "kiwi"];
 var input_content = document.getElementsByClassName("input-content");
 var answer;
 var answerArray = [];
+var guessedArray = []; //!!!!
+var guessedLetter = document.getElementById("guessedLetter");
 var divText;
 var underscores;
 var createDiv;
 var element = document.getElementById("input-content");
 var lives = 5;
-document.querySelector(".btn-primary").addEventListener("click", displayData);
+var lives_ = document.getElementById("lives");
 var gameover = document.getElementById("game-over");
+var create_h1;
+var createLives;
+var livesElement;
+var gameLabel = document.getElementById("game-label");
+
+document.querySelector(".btn-primary").addEventListener("click", displayData);
 
 function displayData() {
   lives = 5;
@@ -24,10 +32,12 @@ function displayData() {
   divText = document.createTextNode(underscores.join(" "));
   createDiv.appendChild(divText);
   element.appendChild(createDiv);
+  updateLives();
   console.log(answer);
   document.addEventListener("keyup", function (e) {
     checkAnswer(e);
     checkLives(e);
+    updateLives();
   });
 }
 
@@ -47,30 +57,36 @@ function checkAnswer(e) {
   }
 }
 function checkLives(e) {
-  for (let i = 0; i < answerArray.length; i++) {
-    if (e.key != answerArray[i]) {
-      lives--;
-      if (lives === 0) {
-        // input game over overlay
-        gameover.style.display = "block";
-        console.log("gameover");
-        break;
-      }
-      break;
+  if (!answerArray.includes(e.key)) {
+    lives--;
+    if (!guessedArray.includes(e.key)) {
+      guessedArray.push(e.key);
+      //updates guess array
+      var createGuessH1 = document.createElement("h1");
+      var createGuessText = document.createTextNode(guessedArray.join(" "));
+      createGuessH1.appendChild(createGuessText);
+      guessedLetter.innerHTML = createGuessH1.textContent;
+    }
+
+    console.log(createGuessH1);
+
+    console.log(guessedArray);
+    createLives.innerHTML = `Lives: ${lives}`;
+    if (lives === 0) {
+      gameover.style.display = "block";
+      gameLabel.style.display = "none";
+      setTimeout(() => {
+        setTimeout(location.reload());
+      }, 3000);
     }
   }
 }
 
-// for (let i = 0; i < answerArray; i++) {
-//   if (e.key === "e") {
-//     console.log("correct key");
-//   }
-// }
-// function keyevent() {
-//   document.addEventListener("keyup", function (userEvent) {
-//     if (answer.indexOf("userEvent.key")) {
-//       console.log("e");
-//     }
-//   });
-// }
-//answer.indexOf("userEvent.key")
+function updateLives() {
+  create_h1 = document.createElement("h1");
+  createLives = document.createTextNode(`Lives: ${lives}`);
+  livesElement = document.getElementById("lives");
+  create_h1.innerHTML = createLives.textContent;
+  livesElement.innerHTML = create_h1.textContent;
+}
+//bug = lives still subtracting even with the right key press
