@@ -1,8 +1,7 @@
 var words = ["banana", "apple", "watermelon", "kiwi"];
-var input_content = document.getElementsByClassName("input-content");
 var answer;
 var answerArray = [];
-var guessedArray = []; //!!!!
+var guessedArray = [];
 var guessedLetter = document.getElementById("guessedLetter");
 var divText;
 var underscores;
@@ -15,6 +14,8 @@ var create_h1;
 var createLives;
 var livesElement;
 var gameLabel = document.getElementById("game-label");
+var winScore;
+var userKey;
 
 document.querySelector(".btn-primary").addEventListener("click", displayData);
 
@@ -25,6 +26,7 @@ function displayData() {
   answerArray = [];
   answer = words[Math.floor(Math.random() * words.length)];
   createDiv = document.createElement("p");
+  winScore = 0;
   for (let i = 0; i < answer.length; i++) {
     underscores.push("_ ");
   }
@@ -35,6 +37,8 @@ function displayData() {
   updateLives();
   console.log(answer);
   document.addEventListener("keyup", function (e) {
+    userKey = e.key;
+    console.log(userKey);
     checkAnswer(e);
     checkLives(e);
     updateLives();
@@ -53,6 +57,7 @@ function checkAnswer(e) {
       underscores[i] = answerArray[i];
       divText = document.createTextNode(underscores.join(" "));
       element.innerHTML = divText.textContent;
+      winCondtion();
     }
   }
 }
@@ -61,6 +66,7 @@ function checkLives(e) {
     lives--;
     if (!guessedArray.includes(e.key)) {
       guessedArray.push(e.key);
+      console.log(winScore);
       //updates guess array
       var createGuessH1 = document.createElement("h1");
       var createGuessText = document.createTextNode(guessedArray.join(" "));
@@ -89,4 +95,14 @@ function updateLives() {
   create_h1.innerHTML = createLives.textContent;
   livesElement.innerHTML = create_h1.textContent;
 }
-//bug = lives still subtracting even with the right key press
+
+function winCondtion() {
+  if (underscores.includes(userKey)) {
+    winScore++;
+  }
+  if (winScore === answer.length) {
+    gameLabel.innerHTML = "You win!";
+  }
+}
+
+//bug - stop adding winScore if e.key already exist in the element
