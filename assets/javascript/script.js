@@ -54,20 +54,20 @@ function convertToArray() {
 function checkAnswer(e) {
   for (let i = 0; i < answerArray.length; i++) {
     if (answerArray[i] === e.key) {
+      winCondtion();
       underscores[i] = answerArray[i];
       divText = document.createTextNode(underscores.join(" "));
       element.innerHTML = divText.textContent;
-      winCondtion();
     }
   }
 }
 function checkLives(e) {
   if (!answerArray.includes(e.key)) {
     lives--;
+    console.log("a");
     if (!guessedArray.includes(e.key)) {
       guessedArray.push(e.key);
       console.log(winScore);
-      //updates guess array
       var createGuessH1 = document.createElement("h1");
       var createGuessText = document.createTextNode(guessedArray.join(" "));
       createGuessH1.appendChild(createGuessText);
@@ -97,12 +97,10 @@ function updateLives() {
 }
 
 function winCondtion() {
-  if (underscores.includes(userKey)) {
+  if (!underscores.includes(userKey)) {
     winScore++;
   }
-  if (winScore === answer.length) {
+  if (winScore === answer.length - 1) {
     gameLabel.innerHTML = "You win!";
   }
 }
-
-//bug - stop adding winScore if e.key already exist in the element
