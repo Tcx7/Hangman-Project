@@ -14,12 +14,11 @@ var create_h1;
 var createLives;
 var livesElement;
 var gameLabel = document.getElementById("game-label");
-var winScore;
-var userKey;
 
 document.querySelector(".btn-primary").addEventListener("click", displayData);
 
 function displayData() {
+  gameLabel.innerHTML = "Guess the fruit";
   lives = 5;
   element.innerHTML = "";
   underscores = [];
@@ -37,11 +36,10 @@ function displayData() {
   updateLives();
   console.log(answer);
   document.addEventListener("keyup", function (e) {
-    userKey = e.key;
-    console.log(userKey);
     checkAnswer(e);
     checkLives(e);
     updateLives();
+    winCondtion();
   });
 }
 
@@ -54,7 +52,6 @@ function convertToArray() {
 function checkAnswer(e) {
   for (let i = 0; i < answerArray.length; i++) {
     if (answerArray[i] === e.key) {
-      winCondtion();
       underscores[i] = answerArray[i];
       divText = document.createTextNode(underscores.join(" "));
       element.innerHTML = divText.textContent;
@@ -97,10 +94,10 @@ function updateLives() {
 }
 
 function winCondtion() {
-  if (!underscores.includes(userKey)) {
-    winScore++;
-  }
-  if (winScore === answer.length - 1) {
-    gameLabel.innerHTML = "You win!";
+  if (String(underscores.join("")) === String(answerArray.join(""))) {
+    gameLabel.innerHTML = "You win! the game will restart in 3 seconds";
+    setTimeout(() => {
+      setTimeout(location.reload());
+    }, 3000);
   }
 }
